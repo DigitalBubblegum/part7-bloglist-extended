@@ -5,10 +5,13 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import UserSubmitForm from './components/UserSubmitForm'
 import Togglable from './components/Togglable'
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
 const App = () => {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
-  const [notificationMessage, setNotificationMessage] = useState(null)
+  // const [notificationMessage, setNotificationMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -43,6 +46,7 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      dispatch(setNotification(`${username} has logged in`,6))
       console.log('lalala', user.id)
     } catch (exception) {
       setErrorMessage('Wrong credentials')
@@ -59,12 +63,12 @@ const App = () => {
   const handleUserFormSubmission = async (blogObject) => {
     console.log('form submission')
     console.log(blogObject)
-    setNotificationMessage(
-      `${blogObject.title} by author ${blogObject.author} added to the blog`,
-    )
-    setTimeout(() => {
-      setNotificationMessage(null)
-    }, 5000)
+    // setNotificationMessage(
+    //   `${blogObject.title} by author ${blogObject.author} added to the blog`,
+    // )
+    // setTimeout(() => {
+    //   setNotificationMessage(null)
+    // }, 5000)
     const returnedBlog = await blogService.create(blogObject)
     console.log(returnedBlog)
     returnedBlog.user = user
@@ -112,8 +116,8 @@ const App = () => {
   return (
     <>
       <Notification
-        errorMessage={errorMessage}
-        notificationMessage={notificationMessage}
+        // errorMessage={errorMessage}
+        // notificationMessage={notificationMessage}
       />
       {user === null ? (
         loginForm()
@@ -121,7 +125,7 @@ const App = () => {
         <>
           <div>
             <h2>blogs</h2>
-            <p>{user.name} has logged in</p>
+            {/* <p>{user.name} has logged in</p> */}
             {logout()}
             <Togglable buttonLabel="Add blog">
               <UserSubmitForm

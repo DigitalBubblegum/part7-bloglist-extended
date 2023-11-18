@@ -1,7 +1,7 @@
 import blogService from '../services/blogs'
 const BlogInfo = ({ blog, addedBy, id, useID, likesUpdater }) => {
-  console.log('mimimimimi', useID)
-  console.log('lulululu', id.id)
+  // console.log('mimimimimi', useID)
+  // console.log('lulululu', id.id)
   const removeItem = async () => {
     let confirm = window.prompt(
       `are you sure you want to delete ${blog.title} by ${blog.author} type yes to confirm`,

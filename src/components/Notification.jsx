@@ -1,11 +1,17 @@
-const Notification = ({ errorMessage, notificationMessage }) => {
-  //exercise 5.4
-  if (errorMessage === 'Wrong credentials') {
-    return <div className="error">{errorMessage}</div>
-  } else if (notificationMessage !== null) {
-    return <div className="notification">{notificationMessage}</div>
-  } else {
-    return null
+import { useSelector } from 'react-redux'
+const Notification = () => {
+  const notification = useSelector(state => state.notification)
+  console.log('in notification',notification)
+  const style = {
+    border: 'solid',
+    padding: 10,
+    borderWidth: 1
   }
+  return (
+    <div style={style}>
+      {notification}
+    </div>
+  )
 }
+
 export default Notification

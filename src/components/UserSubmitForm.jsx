@@ -1,5 +1,8 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
 const UserSubmitForm = ({ createBlog, userId }) => {
+  const dispatch = useDispatch()
   //states
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -33,6 +36,7 @@ const UserSubmitForm = ({ createBlog, userId }) => {
       likes: likes,
       user: userId,
     })
+    dispatch(setNotification(`Added ${title} by ${author}`,6))
     setTitle('')
     setAuthor('')
     setUrl('')
