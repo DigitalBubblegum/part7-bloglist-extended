@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom'
-import { render,screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
@@ -15,9 +15,7 @@ describe('<Blog/>', () => {
   const useID = '123'
   let container
   beforeEach(() => {
-    container = render(
-      <Blog blog={blog} useID={useID} />
-    ).container
+    container = render(<Blog blog={blog} useID={useID} />).container
   })
   test('should renders the blog\'s title and author, but does not render its URL or number of likes by default.', () => {
     const div = container.querySelector('.basicBlogView')

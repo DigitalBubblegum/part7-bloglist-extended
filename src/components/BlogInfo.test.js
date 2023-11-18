@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom'
-import { render,screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import BlogInfo from './BlogInfo'
 describe('', () => {
@@ -10,9 +10,9 @@ describe('', () => {
     url: 'lolol.com',
     likes: 100,
     user: {
-      id:'123',
-      name:'me',
-      username: 'mememe'
+      id: '123',
+      name: 'me',
+      username: 'mememe',
     },
   }
   const addedBy = 'meme'
@@ -26,8 +26,8 @@ describe('', () => {
         addedBy={addedBy}
         id={blog.user}
         useID={useID}
-        likesUpdater = {mockHandler}
-      />
+        likesUpdater={mockHandler}
+      />,
     ).container
   })
   test('c', async () => {

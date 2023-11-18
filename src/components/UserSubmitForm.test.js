@@ -1,5 +1,5 @@
 import React from 'react'
-import { render,screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import UserSubmitForm from './UserSubmitForm'
 import userEvent from '@testing-library/user-event'
@@ -12,7 +12,7 @@ describe('<UserSubmitForm/>', () => {
     const userId = '123'
     const likes = '13'
 
-    render(<UserSubmitForm createBlog={createNew} userId={userId}/>)
+    render(<UserSubmitForm createBlog={createNew} userId={userId} />)
 
     const inputTitle = screen.getByPlaceholderText('enter title here')
     await user.type(inputTitle, 'TitleTest')
