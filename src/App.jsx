@@ -5,10 +5,16 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import UserSubmitForm from './components/UserSubmitForm'
 import Togglable from './components/Togglable'
+import Users from './components/Users'
 import { useDispatch,useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
 import { setUser, userLogin } from './reducers/userReducer'
+import { fetchUsers } from './reducers/userListReducer'
+import {
+  BrowserRouter as Router,
+  Routes, Route, Link
+} from 'react-router-dom'
 // import  store from "./reducers/store";
 const App = () => {
   // console.log(store.getState())
@@ -17,9 +23,13 @@ const App = () => {
   // const [password, setPassword] = useState('')
   // const [user, setUser] = useState(null)
   const user = useSelector(state => state.user)
+
   // console.log('in app',user)
   //effects
-  useEffect(() => {dispatch(initializeBlogs())}, [])
+  useEffect(() => {
+    dispatch(initializeBlogs())
+    dispatch(fetchUsers())
+  }, [])
   const blogs = useSelector(state => state.blogs.slice().sort((a,b) => b.likes-a.likes))
   // console.log('in app',blogs)
   useEffect(() => {
@@ -62,6 +72,9 @@ const App = () => {
 
   const blogListDiv = () => (
     <div>
+      <Togglable buttonLabel="Add blog">
+        <UserSubmitForm userId={user.id}/>
+      </Togglable>
       {blogs.map((blog) => (
         <Blog className="blog" key={blog.id} blog={blog} useID={user.id} />
       ))}
@@ -93,27 +106,34 @@ const App = () => {
   const logout = () => {
     return <button onClick={handleLogout}>LogOut</button>
   }
+  const padding = {
+    padding: 5
+  }
 
   return (
-    <>
-      <Notification/>
+    <Router>
       {user === null ? (
         loginForm()
       ) : (
         <>
           <div>
+            <Link to = '/users'style={padding}>users</Link>
+            <Link to = '/blogs'style={padding}>blogs</Link>
+          </div>
+          <Notification/>
+          <div>
             <h2>blogs</h2>
             <p>{user.name} has logged in</p>
             {logout()}
-            <Togglable buttonLabel="Add blog">
-              <UserSubmitForm userId={user.id}/>
-            </Togglable>
-            {console.log('chihihi', user.id)}
-            {blogListDiv()}
+
           </div>
+          <Routes>
+            <Route path = '/users' element = {<Users />}/>
+            <Route path = '/blogs' element = {blogListDiv()}/>
+          </Routes>
         </>
       )}
-    </>
+    </Router>
   )
 }
 export default App
