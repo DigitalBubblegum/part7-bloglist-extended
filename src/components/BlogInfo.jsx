@@ -1,15 +1,19 @@
-import blogService from '../services/blogs'
+import { useDispatch } from 'react-redux'
+import { deleteBlog } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
 const BlogInfo = ({ blog, addedBy, id, useID, likesUpdater }) => {
-  // console.log('mimimimimi', useID)
-  // console.log('lulululu', id.id)
-  const removeItem = async () => {
+  console.log({ blog, addedBy, id, useID, likesUpdater })
+  const dispatch = useDispatch()
+  const removeItem =  () => {
     let confirm = window.prompt(
       `are you sure you want to delete ${blog.title} by ${blog.author} type yes to confirm`,
     )
     if (confirm.toLocaleLowerCase() === 'yes') {
       console.log('deleted')
-      await blogService.remove(blog.id)
-      window.location.reload()
+      dispatch(setNotification(`${blog.title} is being deleted from the db`,1))
+      dispatch(deleteBlog(blog.id))
+
+      // window.location.reload()
     } else if (confirm.toLocaleLowerCase() === 'no') {
       console.log('clicked no')
     } else {

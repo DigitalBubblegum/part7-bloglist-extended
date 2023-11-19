@@ -17,10 +17,18 @@ const blogSlice = createSlice({
     },
     appendBlog(state, action) {
       state.push(action.payload)
-    }
+    },
+    updateBlogLikes(state,action) {
+      console.log('state now in vote: ', state)
+      console.log('action', action)
+      console.log('blog id is, ', action.payload.id)
+      return state.map((n) =>
+        n.id !== action.payload.id ? n : action.payload
+      )
+    },
   }
 })
-export const { addNewBlog,setBlogs,appendBlog } = blogSlice.actions
+export const { addNewBlog,setBlogs,appendBlog,updateBlogLikes } = blogSlice.actions
 export const initializeBlogs = () => {
   return async dispatch => {
     console.log('inside initialize blogs')
@@ -33,6 +41,22 @@ export const createNewBlog = content => {
   return async dispatch => {
     const newBlog = await blogService.create(content)
     dispatch(appendBlog(newBlog))
+  }
+}
+export const increaseBlogLikes = (id,changedBlogLikes) => {
+  return async dispatch => {
+    console.log('blog',changedBlogLikes)
+    const updatedBlogLikes = await blogService.update(id,changedBlogLikes)
+    dispatch(updateBlogLikes(updatedBlogLikes))
+  }
+}
+export const deleteBlog = (id) => {
+  return async dispatch => {
+    console.log('deleting the blog')
+    const blogdel = await blogService.remove(id)
+    console.log(blogdel)
+    const blogs = await blogService.getAll()
+    dispatch(setBlogs(blogs))
   }
 }
 export default blogSlice.reducer
