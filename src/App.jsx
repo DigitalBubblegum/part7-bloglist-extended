@@ -8,42 +8,52 @@ import Togglable from './components/Togglable'
 import { useDispatch,useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
+import { setUser, userLogin } from './reducers/userReducer'
+// import  store from "./reducers/store";
 const App = () => {
+  // console.log(store.getState())
   const dispatch = useDispatch()
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  // const [username, setUsername] = useState('')
+  // const [password, setPassword] = useState('')
+  // const [user, setUser] = useState(null)
+  const user = useSelector(state => state.user)
+  // console.log('in app',user)
   //effects
   useEffect(() => {dispatch(initializeBlogs())}, [])
   const blogs = useSelector(state => state.blogs.slice().sort((a,b) => b.likes-a.likes))
-  console.log('in app',blogs)
+  // console.log('in app',blogs)
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      console.log('herein',user)
+      dispatch(setUser(user))
       blogService.setToken(user.token)
     }
   }, [])
   //helper functions
   const handleLogin = async (event) => {
     event.preventDefault()
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
-      //setting user token here
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername('')
-      setPassword('')
-      dispatch(setNotification(`${username} has logged in`,6))
-      console.log('lalala', user.id)
-    } catch (exception) {
-      console.log('error',exception)
-    }
+    console.log('trying to login')
+    const signInInfo = { username: event.target.username.value , password: event.target.password.value }
+    console.log(signInInfo)
+    dispatch(userLogin(signInInfo))
+    // try {
+    //   const user = await loginService.login({
+    //     username,
+    //     password,
+    //   })
+    //   window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+    //   //setting user token here
+    //   blogService.setToken(user.token)
+    //   setUser(user)
+    //   setUsername('')
+    //   setPassword('')
+    //   dispatch(setNotification(`${username} has logged in`,6))
+    //   console.log('lalala', user.id)
+    // } catch (exception) {
+    //   console.log('error',exception)
+    // }
   }
   const handleLogout = () => {
     window.localStorage.clear()
@@ -64,18 +74,16 @@ const App = () => {
         username
         <input
           type="text"
-          value={username}
+          name='username'
           id="username"
-          onChange={({ target }) => setUsername(target.value)}
         />
       </div>
       <div>
         password
         <input
           type="password"
-          value={password}
+          name='password'
           id="password"
-          onChange={({ target }) => setPassword(target.value)}
         />
       </div>
       <button type="submit">login</button>

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { increaseBlogLikes } from '../reducers/blogReducer'
 
 const Blog = ({ blog, useID }) => {
-  console.log('wuwuwuwu', blog)
+  // console.log('wuwuwuwu', blog)
   const dispatch = useDispatch()
   const adb = blog.user.name
   const blogStyle = {
@@ -15,12 +15,12 @@ const Blog = ({ blog, useID }) => {
     marginBottom: 5,
   }
   const likesUpdater = () => {
-    console.log(typeof blog.likes)
+    // console.log(typeof blog.likes)
     const changedBlogLikes = {
       ...blog,
       likes: blog.likes + 1
     }
-    console.log('click',changedBlogLikes)
+    // console.log('click',changedBlogLikes)
     dispatch(increaseBlogLikes(changedBlogLikes,blog.id))
   }
   return (

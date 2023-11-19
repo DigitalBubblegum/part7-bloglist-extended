@@ -31,9 +31,9 @@ const blogSlice = createSlice({
 export const { addNewBlog,setBlogs,appendBlog,updateBlogLikes } = blogSlice.actions
 export const initializeBlogs = () => {
   return async dispatch => {
-    console.log('inside initialize blogs')
+    // console.log('inside initialize blogs')
     const blogs = await blogService.getAll()
-    console.log(blogs)
+    // console.log(blogs)
     dispatch(setBlogs(blogs))
   }
 }
