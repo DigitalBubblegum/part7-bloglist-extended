@@ -5,25 +5,18 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import UserSubmitForm from './components/UserSubmitForm'
 import Togglable from './components/Togglable'
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
+import { initializeBlogs } from './reducers/blogReducer'
 const App = () => {
   const dispatch = useDispatch()
-  const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
-  // const [notificationMessage, setNotificationMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  // let useID = null
   //effects
-  useEffect(() => {
-    blogService.getAll().then((blogs) => {
-      // let blogsorted = blogs.slice().sort((a, b) => b.likes - a.likes)
-      // console.log('hahaha',blogsorted)
-      setBlogs(blogs)
-    })
-  }, [])
+  useEffect(() => {dispatch(initializeBlogs())}, [])
+  const blogs = useSelector(state => state.blogs.slice().sort((a,b) => b.likes-a.likes))
+  console.log('in app',blogs)
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
@@ -49,34 +42,14 @@ const App = () => {
       dispatch(setNotification(`${username} has logged in`,6))
       console.log('lalala', user.id)
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      console.log('error',exception)
     }
   }
   const handleLogout = () => {
     window.localStorage.clear()
     window.location.reload()
   }
-  //Exercise 5.3
-  const handleUserFormSubmission = async (blogObject) => {
-    console.log('form submission')
-    console.log(blogObject)
-    // setNotificationMessage(
-    //   `${blogObject.title} by author ${blogObject.author} added to the blog`,
-    // )
-    // setTimeout(() => {
-    //   setNotificationMessage(null)
-    // }, 5000)
-    const returnedBlog = await blogService.create(blogObject)
-    console.log(returnedBlog)
-    returnedBlog.user = user
-    // setBlogs(blogs.concat(returnedBlog))
-    blogService.getAll().then((blogs) => {
-      setBlogs(blogs)
-    })
-  }
+
   const blogListDiv = () => (
     <div>
       {blogs.map((blog) => (
@@ -115,23 +88,17 @@ const App = () => {
 
   return (
     <>
-      <Notification
-        // errorMessage={errorMessage}
-        // notificationMessage={notificationMessage}
-      />
+      <Notification/>
       {user === null ? (
         loginForm()
       ) : (
         <>
           <div>
             <h2>blogs</h2>
-            {/* <p>{user.name} has logged in</p> */}
+            <p>{user.name} has logged in</p>
             {logout()}
             <Togglable buttonLabel="Add blog">
-              <UserSubmitForm
-                createBlog={handleUserFormSubmission}
-                userId={user.id}
-              />
+              <UserSubmitForm userId={user.id}/>
             </Togglable>
             {console.log('chihihi', user.id)}
             {blogListDiv()}
