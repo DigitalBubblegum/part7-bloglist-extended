@@ -14,6 +14,7 @@ import { setUser, userLogin } from './reducers/userReducer'
 import { fetchUsers } from './reducers/userListReducer'
 import { Routes, Route, Link, useNavigate, useMatch } from 'react-router-dom'
 const App = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
   const userList = useSelector(state => state.userList)
@@ -48,6 +49,7 @@ const App = () => {
     const signInInfo = { username: event.target.username.value , password: event.target.password.value }
     console.log(signInInfo)
     dispatch(userLogin(signInInfo))
+    navigate('/blogs')
   }
   const handleLogout = () => {
     window.localStorage.clear()
