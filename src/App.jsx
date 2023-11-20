@@ -91,7 +91,7 @@ const App = () => {
   }
 
   return (
-    <>
+    <div className='container'>
       {user === null ? (
         loginForm()
       ) : (
@@ -113,7 +113,7 @@ const App = () => {
           </Routes>
         </>
       )}
-    </>
+    </div>
   )
 }
 export default App

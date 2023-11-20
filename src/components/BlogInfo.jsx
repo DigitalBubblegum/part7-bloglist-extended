@@ -74,9 +74,7 @@ const BlogInfo = ({ blog,adb, useID }) => {
       ) : <p>bleh</p>}
       <h2>comments</h2>
       <form onSubmit={handleFormSubmit}><input placeholder='enter a comment here for the others' type='text' name='comment'></input><button type='submit' id='saveBlogComment'>save</button></form>
-      <ul>
-        {blog.comments === null? null : blog.comments.map(comment => <li>{comment}</li>)}
-      </ul>
+      {blog.comments === null? null : blog.comments.map(comment => <>&bull;{comment}<br/></>)}
     </div>
   )
 }
