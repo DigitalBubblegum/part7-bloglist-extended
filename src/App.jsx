@@ -94,16 +94,14 @@ const App = () => {
         loginForm()
       ) : (
         <>
-          <div>
+          <div className='navBar'>
             <Link to = '/users'style={padding}>users</Link>
             <Link to = '/blogs'style={padding}>blogs</Link>
+            {user===null?null:<>{user.name} has logged in{logout()}</>}
           </div>
           <Notification/>
           <div>
             <h2>blogs</h2>
-            <p>{user.name} has logged in</p>
-            {logout()}
-
           </div>
           <Routes>
             {individualBlog === null ? null : <Route path ='/blogs/:id' element={<Bloginfo blog={individualBlog} adb={individualBlog.user.name} useId={user.id}/>}/>}
