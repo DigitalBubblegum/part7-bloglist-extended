@@ -41,6 +41,7 @@ const BlogInfo = ({ blog,adb, useID }) => {
     }
   }
   const handleFormSubmit = (event) => {
+    //completed exercise 7.19
     event.preventDefault()
     console.log(event.target.comment.value)
     const content = event.target.comment.value
