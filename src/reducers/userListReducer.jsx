@@ -13,7 +13,7 @@ const userListSlice = createSlice({
 export const { userList } = userListSlice.actions
 export const fetchUsers = () => {
   return async dispatch => {
-    console.log('inside fetchUsers')
+    // console.log('inside fetchUsers')
     const users = await usersService.getAll()
     dispatch(userList(users))
   }

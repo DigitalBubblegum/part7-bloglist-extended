@@ -5,7 +5,7 @@ let token = null
 
 const setToken = (newToken) => {
   token = `Bearer ${newToken}`
-  console.log(token)
+  // console.log(token)
 }
 
 const getAll = () => {
@@ -22,14 +22,14 @@ const create = async (blogObject) => {
 }
 
 const update = async (blogObject, id) => {
-  console.log('update')
+  // console.log('update')
   const response = await axios.put(`${baseUrl}/${id}`, blogObject)
   return response.data
 }
 
 const remove = async (id) => {
   const response = await axios.delete(`${baseUrl}/${id}`)
-  console.log(response)
+  // console.log(response)
   return null
 }
 export default { getAll, setToken, create, update, remove }
