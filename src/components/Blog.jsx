@@ -1,8 +1,5 @@
-import Togglable from '../components/Togglable'
-import BlogInfo from '../components/BlogInfo'
 import { useDispatch } from 'react-redux'
 import { increaseBlogLikes } from '../reducers/blogReducer'
-
 const Blog = ({ blog, useID }) => {
   // console.log('wuwuwuwu', blog)
   const dispatch = useDispatch()
@@ -26,19 +23,7 @@ const Blog = ({ blog, useID }) => {
   return (
     <div style={blogStyle} className="basicBlogView">
       {/* {blog.title} <br/>{blog.author} <br/> {blog.user.name} <br/> {blog.user.id} */}
-      {blog.title} <br />
-      {blog.author}
-      <br />
-      <Togglable buttonLabel="view" className="togglableContent">
-        <BlogInfo
-          className="advancedBlogView"
-          blog={blog}
-          addedBy={adb}
-          id={blog.user}
-          useID={useID}
-          likesUpdater={likesUpdater}
-        />
-      </Togglable>
+      {blog.title} by {blog.author}
     </div>
   )
 }

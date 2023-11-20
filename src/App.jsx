@@ -6,6 +6,7 @@ import UserSubmitForm from './components/UserSubmitForm'
 import Togglable from './components/Togglable'
 import Users from './components/Users'
 import User from './components/User'
+import Bloginfo from './components/BlogInfo'
 import { useDispatch,useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
@@ -26,6 +27,10 @@ const App = () => {
     dispatch(fetchUsers())
   }, [])
   const blogs = useSelector(state => state.blogs.slice().sort((a,b) => b.likes-a.likes))
+  const blogMatch = useMatch('/blogs/:id')
+  console.log('blogs in app',blogs)
+  const individualBlog = blogMatch ? blogs.find(blg => blg.id === blogMatch.params.id) : null
+  console.log('testing',individualBlog)
   // console.log('in app',blogs)
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -55,7 +60,9 @@ const App = () => {
         <UserSubmitForm userId={user.id}/>
       </Togglable>
       {blogs.map((blog) => (
-        <Blog className="blog" key={blog.id} blog={blog} useID={user.id} />
+        <Link to={`/blogs/${blog.id}`} key={blog.id}>
+          <Blog className="blog" key={blog.id} blog={blog} useID={user.id} />
+        </Link>
       ))}
     </div>
   )
@@ -99,6 +106,7 @@ const App = () => {
 
           </div>
           <Routes>
+            {individualBlog === null ? null : <Route path ='/blogs/:id' element={<Bloginfo blog={individualBlog} adb={individualBlog.user.name} useId={user.id}/>}/>}
             <Route path ='/users/:id' element={<User user={individualUser}/>}/>
             <Route path = '/users' element = {<Users />}/>
             <Route path = '/blogs' element = {blogListDiv()}/>
