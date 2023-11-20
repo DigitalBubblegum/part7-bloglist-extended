@@ -13,6 +13,7 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { setUser, userLogin } from './reducers/userReducer'
 import { fetchUsers } from './reducers/userListReducer'
 import { Routes, Route, Link, useNavigate, useMatch } from 'react-router-dom'
+import { Table, Form, Button } from 'react-bootstrap'
 const App = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -42,6 +43,7 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+  console.log('eldorade',user)
   //helper functions
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -49,6 +51,7 @@ const App = () => {
     const signInInfo = { username: event.target.username.value , password: event.target.password.value }
     console.log(signInInfo)
     dispatch(userLogin(signInInfo))
+    dispatch(setNotification('Logged in Successfully',6))
     navigate('/blogs')
   }
   const handleLogout = () => {
@@ -63,24 +66,28 @@ const App = () => {
       </Togglable>
       {blogs.map((blog) => (
         <Link to={`/blogs/${blog.id}`} key={blog.id}>
-          <Blog className="blog" key={blog.id} blog={blog} useID={user.id} />
+          {/* {console.log('mimiinin',user.id)} */}
+          <Blog className="blog" key={blog.id} blog={blog} />
         </Link>
       ))}
     </div>
   )
   //exercise 5.1
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input type="text" name='username' id="username"/>
-      </div>
-      <div>
-        password
-        <input type="password" name='password' id="password"/>
-      </div>
-      <button type="submit">login</button>
-    </form>
+    <div>
+      <h2>Login</h2>
+      <Form onSubmit={handleLogin}>
+        <Form.Group>
+          <Form.Label>username</Form.Label>
+          <Form.Control type="text" name="username"/>
+          <Form.Label>password:</Form.Label>
+          <Form.Control type="password" name="password"/>
+          <Button variant="primary" type="submit">
+            login
+          </Button>
+        </Form.Group>
+      </Form>
+    </div>
   )
   //exercise 5.2
   const logout = () => {
@@ -103,7 +110,7 @@ const App = () => {
           </div>
           <Notification/>
           <div>
-            <h2>blogs</h2>
+            <h1>BLOG APP</h1>
           </div>
           <Routes>
             {individualBlog === null ? null : <Route path ='/blogs/:id' element={<Bloginfo blog={individualBlog} adb={individualBlog.user.name} useId={user.id}/>}/>}

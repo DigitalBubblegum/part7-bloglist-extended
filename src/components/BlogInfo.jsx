@@ -4,7 +4,10 @@ import { setNotification } from '../reducers/notificationReducer'
 import { increaseBlogLikes,addCommentToBlog } from '../reducers/blogReducer'
 import { useNavigate } from 'react-router-dom'
 // const BlogInfo = ({ blog, addedBy, id, useID, likesUpdater }) => {
-const BlogInfo = ({ blog,adb, useID }) => {
+const BlogInfo = ({ blog,adb }) => {
+  const useID = JSON.parse(window.localStorage.getItem('loggedBlogAppUser')).id
+  console.log(adb)
+  console.log(typeof useID)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   if(!blog){
@@ -55,7 +58,7 @@ const BlogInfo = ({ blog,adb, useID }) => {
   }
   return (
     <div>
-      <h1>{blog.title} by {blog.author}</h1>
+      <h2>{blog.title} by author {blog.author}</h2>
       <br />
       <a href={blog.url}>{blog.url}</a>
       <br />
@@ -71,7 +74,7 @@ const BlogInfo = ({ blog,adb, useID }) => {
         <button className="deletion" onClick={removeItem}>
           delete
         </button>
-      ) : <p>bleh</p>}
+      ) : null}
       <h2>comments</h2>
       <form onSubmit={handleFormSubmit}><input placeholder='enter a comment here for the others' type='text' name='comment'></input><button type='submit' id='saveBlogComment'>save</button></form>
       {blog.comments === null? null : blog.comments.map(comment => <>&bull;{comment}<br/></>)}
